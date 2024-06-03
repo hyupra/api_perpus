@@ -1,23 +1,26 @@
 const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
-class Pengarang {
+class Buku {
 
     static create = async(req, res) => {
         try {
-            const data = req.body
-            data.tgl_lahir = new Date(data.tgl_lahir)
-            await prisma.pengarang.create({ data: data })
-            res.json({ status: true, message: 'Berhasil menambah pengarang' })
+            const data = req.body;
+            data.tahun_terbit = parseInt(data.tahun_terbit);
+            data.id_pengarang = parseInt(data.id_pengarang);
+            // data.tahun_terbit = new Date(data.tahun_terbit);
+            await prisma.buku.create({ data: data });
+            res.json({ status: true, message: 'Berhasil menambah buku' });
         } catch (error) {
-            console.error("Error detail:", error);
-            res.json({ status: false, message: 'Terjadi kesalahan saat input pengarang' })
+            console.error("Error detail:", error); // Cetak detail error ke terminal/console
+            res.json({ status: false, message: 'Terjadi kesalahan saat input buku', error: error.message });
         }
     }
 
+
     static find = async(req, res) => {
         try {
-            const findData = await prisma.pengarang.findMany({})
+            const findData = await prisma.buku.findMany({})
             res.json({ status: true, message: "Berhasil memuat", data: findData })
         } catch (error) {
             res.json({ status: false, message: 'Terjadi kesalahan saat menampilkan data' })
@@ -26,8 +29,8 @@ class Pengarang {
 
     static findById = async(req, res) => {
         try {
-            const idPengarang = Number(req.params.id)
-            const findData = await prisma.pengarang.findUnique({ where: { id_pengarang: idPengarang } })
+            const idBuku = Number(req.params.id)
+            const findData = await prisma.buku.findUnique({ where: { id_buku: idBuku } })
             res.json({ status: true, message: "Berhasil memuat", data: findData })
         } catch (error) {
             res.json({ status: false, message: 'Terjadi kesalahan saat menampilkan data' })
@@ -36,11 +39,11 @@ class Pengarang {
 
     static update = async(req, res) => {
         try {
-            const idPengarang = Number(req.params.id)
+            const idBuku = Number(req.params.id)
             const data = req.body
             data.tgl_lahir = new Date(data.tgl_lahir)
-            await prisma.pengarang.update({ where: { id_pengarang: idPengarang }, data: data })
-            res.json({ status: true, message: 'Berhasil merubah data pengarang' })
+            await prisma.buku.update({ where: { id_buku: idBuku }, data: data })
+            res.json({ status: true, message: 'Berhasil merubah data buku' })
         } catch (error) {
             res.json({ status: false, message: 'Terjadi kesalahan saat merubah data' })
         }
@@ -48,9 +51,9 @@ class Pengarang {
 
     static delete = async(req, res) => {
         try {
-            const idPengarang = Number(req.params.id)
-            await prisma.pengarang.delete({ where: { id_pengarang: idPengarang } })
-            res.json({ status: true, message: 'Berhasil mengahapus pengarang' })
+            const idBuku = Number(req.params.id)
+            await prisma.buku.delete({ where: { id_buku: idBuku } })
+            res.json({ status: true, message: 'Berhasil mengahapus buku' })
         } catch (error) {
             res.json({ status: false, message: 'Terjadi kesalahan saat menghapus data' })
         }
@@ -58,4 +61,4 @@ class Pengarang {
 
 }
 
-module.exports = Pengarang
+module.exports = Buku
