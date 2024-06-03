@@ -41,7 +41,7 @@ class Buku {
         try {
             const idBuku = Number(req.params.id)
             const data = req.body
-            data.tgl_lahir = new Date(data.tgl_lahir)
+            data.tahun_terbit = parseInt(data.tahun_terbit);
             await prisma.buku.update({ where: { id_buku: idBuku }, data: data })
             res.json({ status: true, message: 'Berhasil merubah data buku' })
         } catch (error) {

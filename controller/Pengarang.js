@@ -10,7 +10,7 @@ class Pengarang {
             await prisma.pengarang.create({ data: data })
             res.json({ status: true, message: 'Berhasil menambah pengarang' })
         } catch (error) {
-            console.error("Error detail:", error);
+            console.log(error)
             res.json({ status: false, message: 'Terjadi kesalahan saat input pengarang' })
         }
     }
@@ -40,7 +40,7 @@ class Pengarang {
             const data = req.body
             data.tgl_lahir = new Date(data.tgl_lahir)
             await prisma.pengarang.update({ where: { id_pengarang: idPengarang }, data: data })
-            res.json({ status: true, message: 'Berhasil merubah data pengarang' })
+            res.json({ status: true, message: 'Berhasil merubah pengarang' })
         } catch (error) {
             res.json({ status: false, message: 'Terjadi kesalahan saat merubah data' })
         }
